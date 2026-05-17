@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - claude/implement-index-html-L79LY
+      - main
   workflow_dispatch:
 
 permissions:
