@@ -1,0 +1,1516 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1320">
+<title>La Strada Giusta — AFA Scuola Italiana di Barcellona</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='10' height='32' x='0' fill='%23009246'/%3E%3Crect width='10' height='32' x='11' fill='%23ffffff'/%3E%3Crect width='10' height='32' x='22' fill='%23e62d38'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Calistoga&family=IBM+Plex+Sans:wght@300;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/afa-tokens.css">
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-weight: 500;
+    color: var(--afa-ink);
+    background: var(--afa-cream);
+    min-height: 100vh;
+    min-width: 1280px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "Calistoga", Georgia, serif;
+    font-weight: 400;
+    color: var(--afa-ink);
+    margin: 0;
+    line-height: var(--lh-tight);
+  }
+  button, input, select { font: inherit; color: inherit; }
+
+  /* --------- App shell --------- */
+  .app {
+    max-width: 1360px;
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+  }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--afa-line);
+    margin-bottom: 18px;
+  }
+  .topbar__brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .topbar__brand img { height: 56px; width: auto; }
+  .topbar__brand-text { line-height: 1.15; white-space: nowrap; }
+  .topbar__brand-text .kicker {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--afa-blue);
+    font-weight: 700;
+  }
+  .topbar__brand-text .name {
+    font-family: "Calistoga", Georgia, serif;
+    font-size: 20px;
+    color: var(--afa-ink);
+  }
+  .topbar__brand-text .sub {
+    font-size: 12px;
+    color: var(--afa-muted);
+  }
+
+  /* Language toggle */
+  .lang-toggle {
+    display: inline-flex;
+    border: 1px solid var(--afa-line);
+    border-radius: var(--radius-pill);
+    overflow: hidden;
+    background: var(--afa-white);
+  }
+  .lang-toggle button {
+    border: 0;
+    background: transparent;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--afa-muted);
+    cursor: pointer;
+    transition: background .2s, color .2s;
+  }
+  .lang-toggle button + button { border-left: 1px solid var(--afa-line); }
+  .lang-toggle button[aria-pressed="true"] {
+    background: var(--afa-ink);
+    color: var(--afa-white);
+  }
+  .lang-toggle button:hover:not([aria-pressed="true"]) { color: var(--afa-ink); }
+
+  /* --------- Title screen --------- */
+  .title-screen {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 48px;
+    align-items: center;
+    background: var(--afa-white);
+    border: 1px solid var(--afa-line);
+    border-radius: var(--radius-md);
+    padding: 56px 56px 56px 64px;
+  }
+  .title-screen .hero-shapes {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: #e6edd9;
+    box-shadow: var(--shadow-md);
+  }
+  .title-screen .hero-shapes img {
+    width: 100%; height: 100%; object-fit: cover;
+    display: block;
+  }
+  .title-screen h1 {
+    font-size: 3.4rem;
+    letter-spacing: 0.02em;
+    color: var(--afa-ink);
+  }
+  .title-screen h1 .accent { color: var(--afa-red); }
+  .title-screen .tagline {
+    font-family: "Calistoga", Georgia, serif;
+    font-size: 1.5rem;
+    color: var(--afa-blue);
+    margin-top: 16px;
+    line-height: 1.25;
+  }
+  .title-screen .intro {
+    margin-top: 22px;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--afa-text);
+    max-width: 460px;
+  }
+  .title-screen .challenge {
+    margin-top: 14px;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--afa-text);
+    font-weight: 700;
+    max-width: 460px;
+  }
+  .title-screen .cta-row {
+    margin-top: 32px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  /* --------- Buttons --------- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--afa-red);
+    color: var(--afa-white);
+    border: 0;
+    padding: 14px 24px;
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background .2s, transform .1s, box-shadow .2s;
+  }
+  .btn:hover { background: var(--afa-red-hover); box-shadow: var(--shadow-sm); }
+  .btn:active { transform: translateY(1px); }
+  .btn[disabled] { background: #d8d8d8; color: #888; cursor: not-allowed; box-shadow: none; }
+  .btn.btn--blue { background: var(--afa-blue); }
+  .btn.btn--blue:hover { background: var(--afa-blue-hover); }
+  .btn.btn--gold { background: var(--afa-gold); color: var(--afa-ink); }
+  .btn.btn--gold:hover { background: var(--afa-gold-hover); }
+  .btn.btn--ghost {
+    background: transparent; color: var(--afa-ink);
+    border: 1px solid var(--afa-line);
+  }
+  .btn.btn--ghost:hover { background: var(--afa-bg-alt); }
+  .btn.btn--big { padding: 18px 32px; font-size: 16px; }
+
+  /* --------- Game screen --------- */
+  .game {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 18px;
+    align-items: start;
+  }
+
+  .map-stage {
+    position: relative;
+    aspect-ratio: 1536 / 1024;
+    background: #e6edd9;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--afa-line);
+    box-shadow: var(--shadow-md);
+    user-select: none;
+    touch-action: none;
+  }
+  .map-stage img.bg {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    display: block;
+    pointer-events: none;
+  }
+  .map-stage svg.overlay {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    cursor: crosshair;
+  }
+  .map-stage.is-running svg.overlay { cursor: default; }
+  .map-stage.is-drawing svg.overlay { cursor: grabbing; }
+
+  .map-stage .hud {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    pointer-events: none;
+  }
+  .hud .pill {
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: var(--radius-pill);
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--afa-ink);
+    backdrop-filter: blur(2px);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: var(--shadow-sm);
+  }
+  .hud .pill .label {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--afa-muted);
+    font-weight: 700;
+  }
+  .hud .pill .value { font-size: 16px; font-family: "Calistoga"; color: var(--afa-ink); }
+  .hud .pill.warning .value { color: var(--afa-red); }
+
+  .hud-cluster { display: flex; gap: 10px; pointer-events: auto; }
+
+  /* --------- Sidebar --------- */
+  .sidebar {
+    background: var(--afa-white);
+    border: 1px solid var(--afa-line);
+    border-radius: var(--radius-md);
+    padding: 18px;
+    display: flex; flex-direction: column;
+    gap: 14px;
+    position: sticky;
+    top: 16px;
+  }
+  .sidebar h3 {
+    font-family: "Calistoga";
+    font-size: 18px;
+  }
+  .sidebar .level-meta {
+    display: flex; align-items: baseline; gap: 8px;
+  }
+  .sidebar .level-meta .kicker {
+    font-size: 10px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--afa-muted); font-weight: 700;
+  }
+  .sidebar .level-meta .num {
+    font-family: "Calistoga"; font-size: 36px; color: var(--afa-red);
+    line-height: 1;
+  }
+  .sidebar .level-meta .name { font-size: 15px; color: var(--afa-ink); font-weight: 700; }
+  .sidebar .level-sub { font-size: 13px; color: var(--afa-muted); line-height: 1.5; }
+
+  .bus-list { display: flex; flex-direction: column; gap: 8px; }
+  .bus-card {
+    border: 2px solid var(--afa-line);
+    background: var(--afa-white);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: border-color .2s, background .2s;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .bus-card[data-selected="true"] {
+    border-color: var(--afa-ink);
+    background: var(--afa-bg-alt);
+  }
+  .bus-card .swatch {
+    width: 28px; height: 22px; border-radius: 4px;
+    flex-shrink: 0; display: grid; place-items: center;
+    color: white;
+  }
+  .bus-card .meta { flex: 1; line-height: 1.25; }
+  .bus-card .meta .name { font-size: 13px; font-weight: 700; }
+  .bus-card .meta .status { font-size: 11px; color: var(--afa-muted); }
+  .bus-card .clear-btn {
+    border: 0; background: transparent;
+    color: var(--afa-muted);
+    font-size: 11px; cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 4px;
+  }
+  .bus-card .clear-btn:hover { background: rgba(0,0,0,0.05); color: var(--afa-red); }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .stat {
+    background: var(--afa-bg-alt);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+  }
+  .stat .label {
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--afa-muted);
+    font-weight: 700;
+  }
+  .stat .value {
+    font-family: "Calistoga";
+    font-size: 22px;
+    color: var(--afa-ink);
+    line-height: 1.2;
+  }
+  .stat.delivered .value { color: var(--afa-green); }
+  .stat.waiting .value { color: var(--afa-red); }
+  .stat.onboard .value { color: var(--afa-blue); }
+
+  .hint {
+    font-size: 12px;
+    line-height: 1.45;
+    color: var(--afa-muted);
+    background: var(--afa-bg-alt);
+    border-left: 3px solid var(--afa-gold);
+    padding: 8px 10px;
+    border-radius: var(--radius-xs);
+  }
+
+  /* --------- Score modal --------- */
+  .modal-veil {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    z-index: 20;
+  }
+  .modal {
+    background: var(--afa-white);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    max-width: 560px;
+    width: 100%;
+    padding: 36px 40px;
+    animation: pop 0.28s ease-out;
+  }
+  @keyframes pop {
+    from { opacity: 0; transform: translateY(10px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .modal h2 {
+    font-size: 2.2rem; letter-spacing: 0;
+    color: var(--afa-ink);
+  }
+  .modal .body { margin-top: 10px; font-size: 15px; color: var(--afa-text); line-height: 1.55; }
+  .modal .score-line {
+    margin-top: 22px;
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    border-top: 1px solid var(--afa-line);
+    border-bottom: 1px solid var(--afa-line);
+    padding: 14px 0;
+  }
+  .modal .score-line .score-num {
+    font-family: "Calistoga"; font-size: 60px;
+    color: var(--afa-red); line-height: 1;
+  }
+  .modal .score-line .score-sub { color: var(--afa-muted); font-size: 13px; }
+  .modal .bd {
+    margin: 14px 0 6px;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--afa-muted);
+    font-weight: 700;
+  }
+  .modal table.bdtable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .modal table.bdtable td {
+    padding: 4px 0;
+    border-bottom: 1px dashed var(--afa-line);
+  }
+  .modal table.bdtable td:last-child { text-align: right; font-variant-numeric: tabular-nums; font-weight: 700; }
+  .modal table.bdtable td.pos { color: var(--afa-green); }
+  .modal table.bdtable td.neg { color: var(--afa-red); }
+  .modal .actions {
+    margin-top: 22px;
+    display: flex; gap: 12px; justify-content: flex-end;
+  }
+
+  /* --------- Final screen --------- */
+  .final {
+    background: var(--afa-white);
+    border: 1px solid var(--afa-line);
+    border-radius: var(--radius-md);
+    padding: 48px 56px;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .final h1 { font-size: 3rem; line-height: 1.1; }
+  .final .lead { font-size: 16px; color: var(--afa-text); margin-top: 14px; line-height: 1.55; max-width: 460px; }
+  .final .total {
+    margin-top: 24px;
+    background: var(--afa-bg-alt);
+    border-radius: var(--radius-md);
+    padding: 22px 28px;
+  }
+  .final .total .label {
+    font-size: 11px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--afa-muted);
+    font-weight: 700;
+  }
+  .final .total .num {
+    font-family: "Calistoga"; font-size: 78px;
+    color: var(--afa-red); line-height: 1;
+  }
+  .final .total .breakdown {
+    margin-top: 8px;
+    font-size: 13px; color: var(--afa-text);
+    display: flex; gap: 12px; flex-wrap: wrap;
+  }
+  .final .total .breakdown span b { font-weight: 700; color: var(--afa-ink); }
+  .final .actions { margin-top: 28px; display: flex; gap: 12px; flex-wrap: wrap; }
+
+  .final .shape-card {
+    aspect-ratio: 4 / 5;
+    background: var(--afa-bg-alt);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* --------- Small components --------- */
+  .footer-note {
+    margin-top: 22px;
+    font-size: 11px;
+    color: var(--afa-muted);
+    text-align: center;
+    line-height: 1.5;
+  }
+  .footer-note a { color: var(--afa-blue); text-decoration: none; }
+  .footer-note a:hover { text-decoration: underline; }
+
+  /* SVG bus + kid marker animations */
+  @keyframes kid-bob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-2px); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.35; transform: scale(1); }
+    50% { opacity: 0.55; transform: scale(1.08); }
+  }
+  @keyframes jam-pulse {
+    0%, 100% { opacity: 0.18; }
+    50% { opacity: 0.36; }
+  }
+  @keyframes flag-flap {
+    0%, 100% { transform: scaleX(1); }
+    50% { transform: scaleX(0.92); }
+  }
+
+  /* Status: pickedup chip on bus markers */
+  .pickup-flash {
+    animation: flash-out 0.7s ease-out forwards;
+  }
+  @keyframes flash-out {
+    0% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-22px); }
+  }
+
+  /* Hi-DPI banner */
+  .banner {
+    background: var(--afa-bg-alt);
+    border-radius: var(--radius-md);
+    padding: 14px 18px;
+    margin-bottom: 18px;
+    font-size: 14px;
+    color: var(--afa-text);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .banner b { color: var(--afa-ink); }
+
+  /* Avoid scrollbar jump while keeping content reachable */
+  @media (max-width: 900px) {
+    .game { grid-template-columns: 1fr; }
+    .sidebar { position: static; }
+    .title-screen, .final { grid-template-columns: 1fr; gap: 28px; padding: 36px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script src="data.js"></script>
+<script type="text/babel" data-presets="react">
+/* === gameplay.jsx === */
+/* ==================================================================
+   gameplay.jsx — GameScreen: the actual play surface
+   ================================================================== */
+
+const { useState, useEffect, useRef, useCallback, useMemo } = React;
+
+const SVG_W = 1536;
+const SVG_H = 1024;
+
+/* ---------- helpers ---------- */
+function norm(x, y)   { return { x, y }; }
+function toSvg(p)     { return [p[0] * SVG_W, p[1] * SVG_H]; }
+function dist(a, b)   { return Math.hypot(a.x - b.x, a.y - b.y); }
+function distXY(ax, ay, bx, by) { return Math.hypot(ax - bx, ay - by); }
+function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+
+function pointerToNorm(evt, rect) {
+  const x = clamp((evt.clientX - rect.left) / rect.width,  0, 1);
+  const y = clamp((evt.clientY - rect.top)  / rect.height, 0, 1);
+  return { x, y };
+}
+
+function pathToD(path) {
+  if (!path || path.length === 0) return "";
+  return path.map((p, i) => {
+    const [x, y] = toSvg(p);
+    return (i === 0 ? "M" : "L") + " " + x.toFixed(1) + " " + y.toFixed(1);
+  }).join(" ");
+}
+
+/* ---------- StopMarker ---------- */
+function StopMarker({ stop, status, busColor }) {
+  const [sx, sy] = toSvg([stop.x, stop.y]);
+  const isWaiting = status === "waiting";
+  const isOn = typeof status === "string" && status.startsWith("on:");
+  const isDelivered = status === "delivered";
+
+  return (
+    <g transform={`translate(${sx} ${sy})`}>
+      {/* pickup radius — only shown when waiting */}
+      {isWaiting && (
+        <circle r={GAME.pickupRadius * SVG_W} fill="rgba(247,167,0,0.18)" stroke="rgba(247,167,0,0.55)" strokeWidth={2} strokeDasharray="4 4">
+          <animate attributeName="r" values={`${GAME.pickupRadius * SVG_W - 4};${GAME.pickupRadius * SVG_W + 4};${GAME.pickupRadius * SVG_W - 4}`} dur="2.4s" repeatCount="indefinite" />
+        </circle>
+      )}
+
+      {/* The kid pin */}
+      {isWaiting && (
+        <g>
+          <circle r={18} fill="#fff" stroke="#1a1a1a" strokeWidth={3}/>
+          <circle r={14} fill="#f7a700"/>
+          {/* tiny stylised kid: head + body */}
+          <circle cx={0} cy={-3} r={4.2} fill="#1a1a1a"/>
+          <path d="M -6 8 Q 0 -1 6 8 Z" fill="#1a1a1a"/>
+        </g>
+      )}
+      {isOn && (
+        <g opacity={0.55}>
+          <circle r={14} fill="#fff" stroke={busColor || "#1a1a1a"} strokeWidth={2} strokeDasharray="3 3"/>
+        </g>
+      )}
+      {isDelivered && (
+        <g>
+          <circle r={16} fill="#009246" stroke="#fff" strokeWidth={3}/>
+          <path d="M -6 0 L -1.5 4.5 L 7 -5" fill="none" stroke="#fff" strokeWidth={3.2} strokeLinecap="round" strokeLinejoin="round"/>
+        </g>
+      )}
+    </g>
+  );
+}
+
+/* ---------- SchoolMarker ---------- */
+function SchoolMarker() {
+  const [sx, sy] = toSvg([GAME.school.x, GAME.school.y]);
+  return (
+    <g transform={`translate(${sx} ${sy})`}>
+      {/* school zone */}
+      <circle r={GAME.schoolRadius * SVG_W} fill="rgba(0,83,125,0.10)" stroke="rgba(0,83,125,0.45)" strokeWidth={2.5} strokeDasharray="6 6"/>
+
+      {/* building base */}
+      <g transform="translate(0 0)">
+        <rect x={-22} y={-14} width={44} height={28} fill="#fff" stroke="#1a1a1a" strokeWidth={2.5} rx="2"/>
+        <rect x={-22} y={-14} width={44} height={8} fill="#e62d38"/>
+        <rect x={-16} y={0} width={8} height={10} fill="#00537d"/>
+        <rect x={-2}  y={0} width={8} height={10} fill="#00537d"/>
+        <rect x={12}  y={0} width={8} height={10} fill="#00537d"/>
+        {/* flag */}
+        <line x1={0} y1={-14} x2={0} y2={-30} stroke="#1a1a1a" strokeWidth={2}/>
+        <g transform="translate(0 -30)" style={{transformOrigin: "0 0", animation: "flag-flap 2s ease-in-out infinite"}}>
+          <rect x={0} y={0}  width={5} height={9} fill="#009246"/>
+          <rect x={5} y={0}  width={5} height={9} fill="#ffffff"/>
+          <rect x={10} y={0} width={5} height={9} fill="#e62d38"/>
+        </g>
+      </g>
+      <text x={0} y={32} textAnchor="middle" fontSize={15} fontWeight="700" fontFamily="IBM Plex Sans" fill="#1a1a1a" stroke="#fff" strokeWidth={4} paintOrder="stroke">SCUOLA</text>
+    </g>
+  );
+}
+
+/* ---------- BusIcon ---------- */
+function BusIcon({ x, y, angle, color, scale = 1 }) {
+  const [sx, sy] = toSvg([x, y]);
+  return (
+    <g transform={`translate(${sx} ${sy}) rotate(${angle}) scale(${scale})`}>
+      {/* shadow */}
+      <ellipse cx={0} cy={14} rx={22} ry={3} fill="rgba(0,0,0,0.25)"/>
+      {/* wheels */}
+      <circle cx={-13} cy={10} r={5} fill="#1a1a1a"/>
+      <circle cx={13}  cy={10} r={5} fill="#1a1a1a"/>
+      {/* body */}
+      <rect x={-22} y={-12} width={44} height={22} rx={4} fill={color} stroke="#1a1a1a" strokeWidth={2}/>
+      {/* nose lighter accent */}
+      <rect x={14} y={-6} width={8} height={10} fill="rgba(255,255,255,0.35)" rx={2}/>
+      {/* windows */}
+      <rect x={-18} y={-8}  width={9} height={6} fill="#cfe7f5" stroke="#1a1a1a" strokeWidth={1}/>
+      <rect x={-7}  y={-8}  width={9} height={6} fill="#cfe7f5" stroke="#1a1a1a" strokeWidth={1}/>
+      <rect x={4}   y={-8}  width={8} height={6} fill="#cfe7f5" stroke="#1a1a1a" strokeWidth={1}/>
+      {/* headlight */}
+      <circle cx={20} cy={2} r={1.6} fill="#f7a700"/>
+      {/* door */}
+      <line x1={-2} y1={-2} x2={-2} y2={10} stroke="#1a1a1a" strokeWidth={1}/>
+    </g>
+  );
+}
+
+/* ---------- JamPatch ---------- */
+function JamPatch({ jam }) {
+  const [sx, sy] = toSvg([jam.x, jam.y]);
+  const r = GAME.jamRadius * SVG_W;
+  return (
+    <g transform={`translate(${sx} ${sy})`}>
+      <circle r={r} fill="rgba(230,45,56,0.16)" style={{animation: "jam-pulse 1.6s ease-in-out infinite"}}/>
+      <circle r={r * 0.55} fill="rgba(230,45,56,0.30)"/>
+      {/* warning triangle */}
+      <g transform={`translate(0 0)`}>
+        <path d={`M 0 -10 L 10 8 L -10 8 Z`} fill="#e62d38" stroke="#fff" strokeWidth={2.5} strokeLinejoin="round"/>
+        <rect x={-1.2} y={-5} width={2.4} height={8} fill="#fff"/>
+        <circle cx={0} cy={5.5} r={1.2} fill="#fff"/>
+      </g>
+    </g>
+  );
+}
+
+/* ---------- MapStage ---------- */
+function MapStage(props) {
+  const {
+    routes, drawingPath, drawingBus, stopStatus, buses, jams,
+    flashes, phase, selectedBus, depots, onPointerDown, onPointerMove, onPointerUp,
+  } = props;
+
+  const stageRef = useRef(null);
+
+  return (
+    <div
+      ref={stageRef}
+      className={"map-stage " + (phase === "running" ? "is-running " : "") + (drawingPath ? "is-drawing " : "")}
+      onPointerDown={(e) => onPointerDown(e, stageRef.current)}
+      onPointerMove={(e) => onPointerMove(e, stageRef.current)}
+      onPointerUp={(e)   => onPointerUp(e, stageRef.current)}
+      onPointerCancel={(e) => onPointerUp(e, stageRef.current)}
+    >
+      <img className="bg" src="assets/rug.png" alt=""/>
+
+      <svg className="overlay" viewBox={`0 0 ${SVG_W} ${SVG_H}`} preserveAspectRatio="xMidYMid meet">
+        {/* Subtle white wash so colored UI pops against the rug */}
+        <rect x={0} y={0} width={SVG_W} height={SVG_H} fill="rgba(255,255,255,0.08)"/>
+
+        {/* Traffic jams behind routes */}
+        {jams.map((j, i) => <JamPatch key={i} jam={j}/>)}
+
+        {/* Bus depots */}
+        {(depots || []).map((d, i) => {
+          const [dx, dy] = toSvg([d.x, d.y]);
+          const color = GAME.busColors[i];
+          const isSelected = phase === "planning" && selectedBus === i;
+          return (
+            <g key={`depot-${i}`} transform={`translate(${dx} ${dy})`}>
+              {/* badge sits ABOVE bus so the P label is visible */}
+              <g transform="translate(0 -38)">
+                <rect x={-22} y={-13} width={44} height={26} rx={4} fill={"#fff"} stroke={color} strokeWidth={3}>
+                  {isSelected && (
+                    <animate attributeName="stroke-width" values="3;5;3" dur="1.2s" repeatCount="indefinite"/>
+                  )}
+                </rect>
+                <text x={0} y={6} textAnchor="middle" fontSize={18} fontWeight={700} fontFamily="Calistoga" fill={color}>
+                  P{i + 1}
+                </text>
+                {/* connector line */}
+                <line x1={0} y1={13} x2={0} y2={24} stroke={color} strokeWidth={2}/>
+              </g>
+              {/* ground spot under bus */}
+              <ellipse cx={0} cy={2} rx={28} ry={8} fill="rgba(255,255,255,0.55)" stroke={color} strokeWidth={2} strokeDasharray={isSelected ? "" : "4 3"}/>
+            </g>
+          );
+        })}
+
+        {/* Drawn routes (saved) */}
+        {Object.entries(routes).map(([busIdx, path]) => {
+          const color = GAME.busColors[busIdx];
+          return (
+            <g key={busIdx}>
+              <path d={pathToD(path)} fill="none" stroke={color} strokeWidth={9} strokeOpacity={0.28} strokeLinecap="round" strokeLinejoin="round"/>
+              <path d={pathToD(path)} fill="none" stroke={color} strokeWidth={3.5} strokeDasharray="9 7" strokeLinecap="round" strokeLinejoin="round"/>
+            </g>
+          );
+        })}
+
+        {/* Live drawing */}
+        {drawingPath && drawingPath.length > 1 && (
+          <path d={pathToD(drawingPath)} fill="none"
+                stroke={GAME.busColors[drawingBus]} strokeWidth={4}
+                strokeDasharray="10 6" strokeLinecap="round" strokeLinejoin="round" opacity={0.85}/>
+        )}
+
+        {/* Stops */}
+        {GAME.stops.map(s => (
+          <StopMarker
+            key={s.id}
+            stop={s}
+            status={stopStatus[s.id]}
+            busColor={
+              typeof stopStatus[s.id] === "string" && stopStatus[s.id].startsWith("on:")
+                ? GAME.busColors[parseInt(stopStatus[s.id].slice(3))] : null
+            }
+          />
+        ))}
+
+        {/* School */}
+        <SchoolMarker/>
+
+        {/* Buses */}
+        {buses.map((b, i) => (
+          <BusIcon
+            key={i}
+            x={b.pos.x}
+            y={b.pos.y}
+            angle={b.angle || 0}
+            color={GAME.busColors[i]}
+            scale={1}
+          />
+        ))}
+
+        {/* Pickup flashes */}
+        {flashes.map(f => {
+          const [fx, fy] = toSvg([f.x, f.y]);
+          return (
+            <g key={f.id} transform={`translate(${fx} ${fy})`}>
+              <text x={0} y={-26} textAnchor="middle" fontSize={22} fontWeight={700} fontFamily="Calistoga"
+                    fill={f.color} stroke="#fff" strokeWidth={4} paintOrder="stroke"
+                    style={{animation: "flash-out 0.9s ease-out forwards"}}>
+                +1
+              </text>
+            </g>
+          );
+        })}
+      </svg>
+    </div>
+  );
+}
+
+/* ---------- Sidebar ---------- */
+function Sidebar({
+  L, level, numBuses, routes, selectedBus, setSelectedBus, clearRoute,
+  phase, timeLeft, delivered, totalKids, onBoardSum, distanceSum,
+  canDepart, onDepart, onSeeResult,
+}) {
+  const sec = Math.ceil(timeLeft);
+  const lowTime = sec <= 10 && phase === "running";
+  return (
+    <aside className="sidebar">
+      <div className="level-meta">
+        <div>
+          <div className="kicker">{L.level}</div>
+          <div className="num">0{level.id}</div>
+        </div>
+        <div style={{flex:1}}>
+          <div className="name">{L.busesWord[numBuses]}</div>
+          <div className="level-sub">{L.levelSub[level.id]}</div>
+        </div>
+      </div>
+
+      <div className="bus-list">
+        {Array.from({length: numBuses}).map((_, i) => {
+          const has = routes[i] && routes[i].length > 1;
+          const selected = selectedBus === i && phase === "planning";
+          return (
+            <div key={i} className="bus-card"
+                 data-selected={selected}
+                 onClick={() => phase === "planning" && setSelectedBus(i)}>
+              <div className="swatch" style={{background: GAME.busColors[i]}}>
+                <svg viewBox="-22 -12 44 24" width="22" height="14">
+                  <rect x={-20} y={-10} width={40} height={20} rx={3} fill={GAME.busColors[i]} stroke="#fff" strokeWidth={1.5}/>
+                  <rect x={-16} y={-6} width={6} height={5} fill="#fff" opacity={0.85}/>
+                  <rect x={-8} y={-6} width={6} height={5} fill="#fff" opacity={0.85}/>
+                  <rect x={0} y={-6} width={6} height={5} fill="#fff" opacity={0.85}/>
+                </svg>
+              </div>
+              <div className="meta">
+                <div className="name">{L.bus} {i + 1}</div>
+                <div className="status">
+                  {has
+                    ? L.selectBusShort + " ✓"
+                    : (selected ? L.selectBus : L.selectBusShort)}
+                </div>
+              </div>
+              {has && phase === "planning" && (
+                <button className="clear-btn" onClick={(e) => { e.stopPropagation(); clearRoute(i); }}>
+                  ✕
+                </button>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="stats-grid">
+        <div className="stat">
+          <div className="label">{L.timeLeft}</div>
+          <div className="value" style={lowTime ? {color: "var(--afa-red)"} : null}>{sec}s</div>
+        </div>
+        <div className="stat onboard">
+          <div className="label">{L.onBoard}</div>
+          <div className="value">{onBoardSum}</div>
+        </div>
+        <div className="stat delivered">
+          <div className="label">{L.delivered}</div>
+          <div className="value">{delivered}/{totalKids}</div>
+        </div>
+        <div className="stat waiting">
+          <div className="label">{L.waiting}</div>
+          <div className="value">{totalKids - delivered - onBoardSum}</div>
+        </div>
+      </div>
+
+      <div className="hint">
+        {phase === "planning"
+          ? L.drawHint + " " + L.pickupTip
+          : phase === "running"
+            ? L.jamTip
+            : L.seeResult}
+      </div>
+
+      {phase === "planning" && (
+        <button className="btn btn--big" disabled={!canDepart} onClick={onDepart}>
+          {L.depart}
+        </button>
+      )}
+      {phase === "finished" && (
+        <button className="btn btn--big" onClick={onSeeResult}>
+          {L.seeResult}
+        </button>
+      )}
+    </aside>
+  );
+}
+
+/* ==================================================================
+   GameScreen — main play screen for one level
+   ================================================================== */
+function GameScreen({ level, lang, onLevelComplete, seed }) {
+  const L = STRINGS[lang];
+  const numBuses = level.buses;
+  const totalKids = GAME.stops.length;
+
+  const [routes, setRoutes] = useState({});           // {busIdx: [[x,y]...]}
+  const [selectedBus, setSelectedBus] = useState(0);
+  const [drawing, setDrawing] = useState(null);       // {busIdx, path}
+  const [phase, setPhase] = useState("planning");     // planning | running | finished
+  const [timeLeft, setTimeLeft] = useState(GAME.timeBudget);
+  const [stopStatus, setStopStatus] = useState(
+    Object.fromEntries(GAME.stops.map(s => [s.id, "waiting"]))
+  );
+
+  // Compute random bus depots (each bus starts at a different one).
+  // Deterministic from seed so retrying the same level keeps the same spots.
+  const depots = useMemo(() => {
+    let s = (seed + 9001) >>> 0;
+    const rng = () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 0xffffffff; };
+    return GAMEU.pickRandomJams(numBuses, GAME.depotPool, rng);
+  }, [seed, numBuses]);
+
+  const [buses, setBuses] = useState(() =>
+    Array.from({length: numBuses}).map((_, i) => {
+      // mirror the depot calc so init aligns with useMemo result
+      let s = (seed + 9001) >>> 0;
+      const rng = () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 0xffffffff; };
+      const d = GAMEU.pickRandomJams(numBuses, GAME.depotPool, rng)[i];
+      return {
+        idx: i,
+        distance: 0,
+        onBoard: 0,
+        done: false,
+        atSchool: false,
+        pos: { x: d.x, y: d.y },
+        angle: 0,
+      };
+    })
+  );
+  const [flashes, setFlashes] = useState([]);
+
+  // Stable per-level jams
+  const jams = useMemo(() => {
+    let s = seed >>> 0;
+    const rng = () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 0xffffffff; };
+    return GAMEU.pickRandomJams(3, GAME.jamPool, rng);
+  }, [seed]);
+
+  // ---- drawing handlers ----
+  const onPointerDown = useCallback((evt, stageEl) => {
+    if (phase !== "planning") return;
+    if (!stageEl) return;
+    stageEl.setPointerCapture(evt.pointerId);
+    const rect = stageEl.getBoundingClientRect();
+    const p = pointerToNorm(evt, rect);
+    // Always start at this bus's depot
+    const d = depots[selectedBus];
+    setDrawing({ busIdx: selectedBus, path: [[d.x, d.y], [p.x, p.y]] });
+  }, [phase, selectedBus, depots]);
+
+  const onPointerMove = useCallback((evt, stageEl) => {
+    if (!drawing || phase !== "planning") return;
+    const rect = stageEl.getBoundingClientRect();
+    const p = pointerToNorm(evt, rect);
+    setDrawing(d => {
+      if (!d) return d;
+      const last = d.path[d.path.length - 1];
+      const dx = p.x - last[0], dy = p.y - last[1];
+      if (dx * dx + dy * dy > 0.0004) {
+        return { ...d, path: [...d.path, [p.x, p.y]] };
+      }
+      return d;
+    });
+  }, [drawing, phase]);
+
+  const [pendingAutoDepart, setPendingAutoDepart] = useState(false);
+
+  const onPointerUp = useCallback((evt, stageEl) => {
+    if (!drawing) return;
+    // Auto-close path back to school
+    const finalPath = [...drawing.path, [GAME.school.x, GAME.school.y]];
+    const len = GAMEU.pathLength(finalPath);
+    if (len > 0.06) {
+      setRoutes(r => {
+        const next = { ...r, [drawing.busIdx]: finalPath };
+        const missing = [];
+        for (let i = 0; i < numBuses; i++) {
+          if (!(next[i] && next[i].length > 1)) missing.push(i);
+        }
+        if (missing.length === 0) {
+          // All routes drawn → flag for auto-depart after state settles
+          setPendingAutoDepart(true);
+        } else {
+          // Prefer the next index after the one we just finished
+          const nextSel = missing.find(i => i > drawing.busIdx);
+          setSelectedBus(nextSel !== undefined ? nextSel : missing[0]);
+        }
+        return next;
+      });
+    }
+    setDrawing(null);
+  }, [drawing, numBuses]);
+
+  const clearRoute = useCallback((idx) => {
+    setRoutes(r => { const n = { ...r }; delete n[idx]; return n; });
+  }, []);
+
+  // ---- depart ----
+  const depart = useCallback(() => {
+    // initialise buses with route metadata
+    setBuses(prev => prev.map((b, i) => ({
+      ...b,
+      distance: 0,
+      onBoard: 0,
+      done: !(routes[i] && routes[i].length > 1),
+      atSchool: false,  // start at depot, NOT at school (so first arrival drops off)
+      totalLen: routes[i] ? GAMEU.pathLength(routes[i]) : 0,
+    })));
+    setPhase("running");
+  }, [routes]);
+
+  // Auto-depart once all routes are drawn (after state settles).
+  useEffect(() => {
+    if (!pendingAutoDepart) return;
+    const t = setTimeout(() => {
+      setPendingAutoDepart(false);
+      depart();
+    }, 350);
+    return () => clearTimeout(t);
+  }, [pendingAutoDepart, depart]);
+
+  // ---- animation tick ----
+  const rafRef = useRef(0);
+  useEffect(() => {
+    if (phase !== "running") return;
+    let last = performance.now();
+    const tick = (now) => {
+      const dt = Math.min((now - last) / 1000, 0.05); // clamp dt
+      last = now;
+
+      // Update buses + stop pickups + dropoffs in a single pass to keep state consistent.
+      const newFlashes = [];
+      setBuses(prevBuses => {
+        // make a working copy of stopStatus we can mutate, then setStopStatus once
+        let stopChanged = false;
+        const stopWork = { ...stopStatusRef.current };
+
+        const nextBuses = prevBuses.map((b, i) => {
+          const route = routes[i];
+          if (!route || b.done) return b;
+
+          // slow down inside any jam
+          const curPos = GAMEU.posOnPath(route, b.distance);
+          let speed = GAME.speed;
+          for (const j of jams) {
+            if (distXY(curPos[0], curPos[1], j.x, j.y) < GAME.jamRadius) {
+              speed *= GAME.jamSlow; break;
+            }
+          }
+
+          let newDist = b.distance + speed * dt;
+          let done = false;
+          if (newDist >= b.totalLen) { newDist = b.totalLen; done = true; }
+
+          const newPos = GAMEU.posOnPath(route, newDist);
+          // direction
+          const aheadPos = GAMEU.posOnPath(route, Math.min(b.totalLen, newDist + 0.002));
+          const dx = aheadPos[0] - newPos[0], dy = aheadPos[1] - newPos[1];
+          const angle = Math.atan2(dy * SVG_H, dx * SVG_W) * 180 / Math.PI;
+
+          let onBoard = b.onBoard;
+
+          // Pickup pass
+          for (const s of GAME.stops) {
+            if (stopWork[s.id] !== "waiting") continue;
+            if (onBoard >= GAME.capacity) break;
+            if (distXY(newPos[0], newPos[1], s.x, s.y) < GAME.pickupRadius) {
+              stopWork[s.id] = "on:" + i;
+              stopChanged = true;
+              onBoard++;
+              newFlashes.push({ id: Math.random().toString(36).slice(2), x: s.x, y: s.y, color: GAME.busColors[i] });
+            }
+          }
+
+          // Dropoff at school
+          const atSchoolNow = distXY(newPos[0], newPos[1], GAME.school.x, GAME.school.y) < GAME.schoolRadius;
+          if (atSchoolNow && !b.atSchool && onBoard > 0) {
+            for (const sid of Object.keys(stopWork)) {
+              if (stopWork[sid] === "on:" + i) { stopWork[sid] = "delivered"; stopChanged = true; }
+            }
+            onBoard = 0;
+          }
+
+          return {
+            ...b,
+            distance: newDist,
+            pos: { x: newPos[0], y: newPos[1] },
+            angle,
+            onBoard,
+            done,
+            atSchool: atSchoolNow,
+          };
+        });
+
+        if (stopChanged) {
+          stopStatusRef.current = stopWork;
+          setStopStatus(stopWork);
+        }
+        return nextBuses;
+      });
+
+      if (newFlashes.length) {
+        setFlashes(prev => [...prev, ...newFlashes]);
+        setTimeout(() => {
+          setFlashes(prev => prev.filter(f => !newFlashes.find(n => n.id === f.id)));
+        }, 900);
+      }
+
+      // time
+      setTimeLeft(t => {
+        const nt = Math.max(0, t - dt);
+        return nt;
+      });
+
+      rafRef.current = requestAnimationFrame(tick);
+    };
+    rafRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [phase, routes, jams]);
+
+  // ---- end of run detection ----
+  const stopStatusRef = useRef(stopStatus);
+  useEffect(() => { stopStatusRef.current = stopStatus; }, [stopStatus]);
+
+  useEffect(() => {
+    if (phase !== "running") return;
+    const allBusesDone = buses.every(b => b.done);
+    if (timeLeft <= 0 || allBusesDone) {
+      // wrap up
+      cancelAnimationFrame(rafRef.current);
+      setPhase("finished");
+    }
+  }, [phase, buses, timeLeft]);
+
+  // ---- derived stats ----
+  const delivered = useMemo(
+    () => Object.values(stopStatus).filter(v => v === "delivered").length,
+    [stopStatus]
+  );
+  const onBoardSum = useMemo(() => buses.reduce((s, b) => s + (b.onBoard || 0), 0), [buses]);
+  const distanceSum = useMemo(() => {
+    return Object.values(routes).reduce((s, p) => s + GAMEU.pathLength(p), 0);
+  }, [routes]);
+  const canDepart = Object.values(routes).some(p => p && p.length > 1);
+
+  // ---- result handler ----
+  const handleSeeResult = () => {
+    const timeUsed = GAME.timeBudget - timeLeft;
+    const result = {
+      level: level.id,
+      numBuses,
+      delivered,
+      totalKids,
+      timeUsed,
+      distance: distanceSum,
+      jamsCount: jams.length,
+    };
+    // Score: kids * weight − time penalty − distance penalty + perfect bonus
+    const kidsScore = delivered * GAME.pointsPerKid;
+    const timePenalty = Math.round(timeUsed * GAME.timePenalty);
+    const distPenalty = Math.round(distanceSum * GAME.distancePenalty);
+    const bonus = (delivered === totalKids) ? GAME.perfectBonus : 0;
+    const total = Math.max(0, kidsScore - timePenalty - distPenalty + bonus);
+    result.kidsScore = kidsScore;
+    result.timePenalty = timePenalty;
+    result.distPenalty = distPenalty;
+    result.bonus = bonus;
+    result.total = total;
+    onLevelComplete(result);
+  };
+
+  return (
+    <div className="game">
+      <MapStage
+        routes={routes}
+        drawingPath={drawing ? drawing.path : null}
+        drawingBus={drawing ? drawing.busIdx : 0}
+        stopStatus={stopStatus}
+        buses={buses}
+        jams={jams}
+        flashes={flashes}
+        phase={phase}
+        selectedBus={selectedBus}
+        depots={depots}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+      />
+      <Sidebar
+        L={L}
+        level={level}
+        numBuses={numBuses}
+        routes={routes}
+        selectedBus={selectedBus}
+        setSelectedBus={setSelectedBus}
+        clearRoute={clearRoute}
+        phase={phase}
+        timeLeft={timeLeft}
+        delivered={delivered}
+        totalKids={totalKids}
+        onBoardSum={onBoardSum}
+        distanceSum={distanceSum}
+        canDepart={canDepart}
+        onDepart={depart}
+        onSeeResult={handleSeeResult}
+      />
+    </div>
+  );
+}
+
+Object.assign(window, { GameScreen });
+
+
+/* === game.jsx === */
+/* ==================================================================
+   game.jsx — App, TitleScreen, ScoreModal, FinalScreen
+   ================================================================== */
+
+const { useState: useState_, useEffect: useEffect_ } = React;
+
+/* ---------- Topbar (logo + language) ---------- */
+function Topbar({ lang, setLang }) {
+  const langs = [
+    ["it", "IT"], ["es", "ES"], ["ca", "CA"], ["en", "EN"],
+  ];
+  return (
+    <header className="topbar">
+      <div className="topbar__brand">
+        <img src="assets/logo-afa.png" alt="AFA — Associazione delle Famiglie"/>
+        <div className="topbar__brand-text">
+          <div className="kicker">Raccolta fondi · 2026</div>
+          <div className="name">La Strada Giusta</div>
+          <div className="sub">Aiuta lo Scuolabus AFA</div>
+        </div>
+      </div>
+      <div className="lang-toggle" role="tablist">
+        {langs.map(([code, label]) => (
+          <button key={code}
+                  aria-pressed={lang === code}
+                  onClick={() => setLang(code)}>
+            {label}
+          </button>
+        ))}
+      </div>
+    </header>
+  );
+}
+
+/* ---------- TitleScreen ---------- */
+function TitleScreen({ lang, onStart }) {
+  const L = STRINGS[lang];
+  return (
+    <section className="title-screen">
+      <div className="hero-shapes">
+        {/* Stylised mini-map preview using the rug image, with shape decoration corners */}
+        <img src="assets/rug.png" alt="" style={{filter: "saturate(1.05)"}}/>
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none"
+             style={{position: "absolute", inset: 0, width:"100%", height:"100%", pointerEvents:"none"}}>
+          <circle cx={11} cy={20} r={5} fill="#f7a700" opacity={0.92}/>
+          <rect x={84} y={6} width={11} height={11} fill="#e62d38" opacity={0.88} transform="rotate(15 90 11)"/>
+          <path d="M 86 80 L 95 96 L 78 96 Z" fill="#7DBE2B" opacity={0.85}/>
+          <rect x={1} y={78} width={11} height={11} fill="#00537d" opacity={0.85} transform="rotate(-10 6 84)"/>
+        </svg>
+      </div>
+      <div>
+        <div style={{fontSize: 11, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--afa-blue)", fontWeight: 700, marginBottom: 8}}>
+          AFA · Scuola Italiana di Barcellona
+        </div>
+        <h1>
+          La <span className="accent">Strada</span><br/>Giusta
+        </h1>
+        <div className="tagline">{L.tagline}</div>
+        <p className="intro">{L.intro}</p>
+        <p className="challenge">{L.challenge}</p>
+        <div className="cta-row">
+          <button className="btn btn--big" onClick={onStart}>{L.play}</button>
+          <div style={{fontSize: 12, color: "var(--afa-muted)", maxWidth: 200, lineHeight: 1.4}}>
+            {{
+              it: "3 livelli · 60 secondi · 16 bambini",
+              es: "3 niveles · 60 segundos · 16 niños",
+              ca: "3 nivells · 60 segons · 16 infants",
+              en: "3 levels · 60 seconds · 16 kids",
+            }[lang]}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------- ScoreModal ---------- */
+function ScoreModal({ result, lang, isFinalLevel, onNext, onRetry }) {
+  const L = STRINGS[lang];
+  const perfect = result.delivered === result.totalKids;
+  const missed = result.totalKids - result.delivered;
+
+  return (
+    <div className="modal-veil">
+      <div className="modal">
+        <div style={{fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--afa-muted)", fontWeight: 700, marginBottom: 6}}>
+          {L.level} {result.level} · {L.busesWord[result.numBuses]}
+        </div>
+        <h2>{L.resultTitle[result.level]}</h2>
+        <p className="body">{L.resultBody[result.level]}</p>
+
+        <div className="score-line">
+          <div className="score-num">{result.total.toLocaleString()}</div>
+          <div style={{flex:1}}>
+            <div style={{fontFamily:"Calistoga", fontSize: 18, color: "var(--afa-ink)"}}>
+              {result.delivered} / {result.totalKids}
+            </div>
+            <div className="score-sub">
+              {perfect
+                ? L.perfect
+                : `${missed} ${L.incomplete}`}
+            </div>
+          </div>
+        </div>
+
+        <div className="bd">{L.breakdown}</div>
+        <table className="bdtable">
+          <tbody>
+            <tr><td>{L.bdKids} ({result.delivered} × {GAME.pointsPerKid})</td>
+                <td className="pos">+{result.kidsScore}</td></tr>
+            <tr><td>{L.bdTime} ({Math.round(result.timeUsed)}s)</td>
+                <td className="neg">−{result.timePenalty}</td></tr>
+            <tr><td>{L.bdDist} ({result.distance.toFixed(2)})</td>
+                <td className="neg">−{result.distPenalty}</td></tr>
+            {result.bonus > 0 && (
+              <tr><td>{L.bdBonus}</td>
+                  <td className="pos">+{result.bonus}</td></tr>
+            )}
+          </tbody>
+        </table>
+
+        <div className="actions">
+          <button className="btn btn--ghost" onClick={onRetry}>{L.again}</button>
+          <button className="btn" onClick={onNext}>
+            {isFinalLevel ? L.seeResult : L.nextLevel}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ---------- FinalScreen ---------- */
+function FinalScreen({ results, lang, onPlayAgain }) {
+  const L = STRINGS[lang];
+  const total = results.reduce((s, r) => s + r.total, 0);
+  const l1 = results[0]?.total || 0;
+  const l2 = results[1]?.total || 0;
+  const l3 = results[2]?.total || 0;
+  const allKids = results.reduce((s, r) => s + r.delivered, 0);
+  const possibleKids = results.length * GAME.stops.length;
+
+  const body = L.raffleBody
+    .replace("{score}", total.toLocaleString())
+    .replace("{l1}", l1.toLocaleString())
+    .replace("{l2}", l2.toLocaleString())
+    .replace("{l3}", l3.toLocaleString());
+  const mailto =
+    "mailto:info@afaitaliana.org?subject=" +
+    encodeURIComponent(L.raffleSubject) +
+    "&body=" + encodeURIComponent(body);
+
+  return (
+    <section className="final">
+      <div>
+        <div style={{fontSize: 11, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--afa-blue)", fontWeight: 700, marginBottom: 8}}>
+          {{it:"Risultato finale", es:"Resultado final", ca:"Resultat final", en:"Final result"}[lang]}
+        </div>
+        <h1>{L.finalTitle}</h1>
+        <p className="lead">{L.finalLead}</p>
+
+        <div className="total">
+          <div className="label">{L.yourTotal}</div>
+          <div className="num">{total.toLocaleString()}</div>
+          <div className="breakdown">
+            <span><b>L1</b> {l1.toLocaleString()}</span>
+            <span><b>L2</b> {l2.toLocaleString()}</span>
+            <span><b>L3</b> {l3.toLocaleString()}</span>
+            <span>· <b>{allKids}</b>/{possibleKids} {L.delivered.toLowerCase()}</span>
+          </div>
+        </div>
+
+        <div className="actions">
+          <a className="btn btn--big" href={mailto}>{L.raffleCta}</a>
+          <button className="btn btn--ghost" onClick={onPlayAgain}>{L.playAgain}</button>
+        </div>
+      </div>
+
+      <div className="shape-card">
+        {/* Bauhaus-y shape collage in AFA colours */}
+        <svg viewBox="0 0 100 125" width="100%" height="100%" preserveAspectRatio="xMidYMid slice"
+             style={{background:"#f6f4ef"}}>
+          <rect x={6} y={18} width={56} height={36} fill="#00537d" transform="rotate(-8 34 36)"/>
+          <circle cx={74} cy={32} r={20} fill="#f7a700"/>
+          <path d="M 18 92 L 50 60 L 50 92 Z" fill="#7DBE2B"/>
+          <rect x={60} y={70} width={28} height={28} fill="#e62d38" transform="rotate(12 74 84)"/>
+          {/* tiny illustrated bus */}
+          <g transform="translate(50 110)">
+            <rect x={-14} y={-7} width={28} height={12} rx={2} fill="#fff" stroke="#1a1a1a" strokeWidth={1}/>
+            <rect x={-11} y={-4} width={5} height={4} fill="#cfe7f5"/>
+            <rect x={-5}  y={-4} width={5} height={4} fill="#cfe7f5"/>
+            <rect x={1}   y={-4} width={4} height={4} fill="#cfe7f5"/>
+            <circle cx={-8} cy={6} r={2.2} fill="#1a1a1a"/>
+            <circle cx={7}  cy={6} r={2.2} fill="#1a1a1a"/>
+          </g>
+        </svg>
+      </div>
+    </section>
+  );
+}
+
+/* ---------- App ---------- */
+function App() {
+  const [lang, setLang] = useState_("it");
+  const [screen, setScreen] = useState_("title");   // title | playing | final
+  const [levelIdx, setLevelIdx] = useState_(0);
+  const [results, setResults] = useState_([]);
+  const [pendingResult, setPendingResult] = useState_(null);  // for ScoreModal
+  const [seed, setSeed] = useState_(() => Math.floor(Math.random() * 1e9));
+
+  // When a level finishes
+  const handleLevelComplete = (result) => setPendingResult(result);
+
+  const startGame = () => {
+    setResults([]);
+    setLevelIdx(0);
+    setSeed(Math.floor(Math.random() * 1e9));
+    setScreen("playing");
+  };
+
+  const dismissModalContinue = () => {
+    const newResults = [...results, pendingResult];
+    setResults(newResults);
+    setPendingResult(null);
+
+    if (levelIdx + 1 < GAME.levels.length) {
+      setLevelIdx(levelIdx + 1);
+      setSeed(seed + 1);
+    } else {
+      setScreen("final");
+    }
+  };
+
+  const dismissModalRetry = () => {
+    // Replay same level — bump seed for fresh jams.
+    setPendingResult(null);
+    setSeed(seed + 7);
+  };
+
+  const playAgain = () => {
+    setScreen("title");
+    setResults([]);
+    setLevelIdx(0);
+  };
+
+  const level = GAME.levels[levelIdx];
+
+  return (
+    <div className="app">
+      <Topbar lang={lang} setLang={setLang}/>
+
+      {screen === "title" && (
+        <TitleScreen lang={lang} onStart={startGame}/>
+      )}
+
+      {screen === "playing" && (
+        <>
+          <GameScreen
+            key={`L${level.id}-S${seed}`}
+            level={level}
+            lang={lang}
+            seed={seed}
+            onLevelComplete={handleLevelComplete}
+          />
+          {pendingResult && (
+            <ScoreModal
+              result={pendingResult}
+              lang={lang}
+              isFinalLevel={levelIdx === GAME.levels.length - 1}
+              onNext={dismissModalContinue}
+              onRetry={dismissModalRetry}
+            />
+          )}
+        </>
+      )}
+
+      {screen === "final" && (
+        <FinalScreen results={results} lang={lang} onPlayAgain={playAgain}/>
+      )}
+
+      <div className="footer-note">
+        AFA · Associazione delle Famiglie · <a href="https://www.afaitaliana.org" target="_blank" rel="noopener">afaitaliana.org</a> · Carrer de Setantí 10–12, Barcellona
+      </div>
+    </div>
+  );
+}
+
+/* ---------- mount ---------- */
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+
+</script>
+
+</body>
+</html>

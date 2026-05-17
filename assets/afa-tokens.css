@@ -1,0 +1,379 @@
+/* ============================================================
+   AFA Design System — Colours, Type, Spacing, Elevation
+   Associazione delle Famiglie degli Alunni — Scuola Italiana di Barcellona
+   Source of truth extracted from afaitaliana.org WordPress theme
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   FONTS
+   Display: Calistoga (slab serif, rounded terminals — used for ALL
+            headings on the live site, including h1–h6).
+   Body:    IBM Plex Sans (humanist sans, Plex family).
+   ------------------------------------------------------------ */
+@import url('https://fonts.googleapis.com/css2?family=Calistoga&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* ----------------------------------------------------------
+     COLOUR — RAW PALETTE (extracted from live theme)
+     ---------------------------------------------------------- */
+
+  /* PRIMARY — Gold / Amber — used for accent headings + highlights */
+  --afa-gold:        #f7a700;
+  --afa-gold-soft:   #fde9b8;
+  --afa-gold-hover:  #e09700;
+  --afa-gold-press:  #b87a00;
+
+  /* SECONDARY — Deep teal blue — used for sub-headings + info */
+  --afa-blue:        #00537d;
+  --afa-blue-soft:   #d6e6ee;
+  --afa-blue-hover:  #003f5e;
+  --afa-blue-press:  #002c43;
+
+  /* ACCENT — Italian red — primary CTA button + emphasis */
+  --afa-red:         #e62d38;
+  --afa-red-soft:    #fbd7d9;
+  --afa-red-hover:   #c52129;
+  --afa-red-press:   #9c1a20;
+
+  /* LOGO GREEN — Italian flag green from the wordmark accent */
+  --afa-green:       #009246;
+  --afa-green-soft:  #d6efe1;
+
+  /* INK — near-black + greys */
+  --afa-ink:         #1a1a1a;   /* strong heading-on-light */
+  --afa-text:        #333333;   /* body text */
+  --afa-muted:       #666666;   /* footer / secondary text */
+  --afa-faded:       #999999;   /* placeholder, meta */
+  --afa-line:        #dddddd;   /* hairline borders */
+
+  /* SURFACES */
+  --afa-white:       #ffffff;
+  --afa-cream:       #f6f6f6;   /* header top, footer alt */
+  --afa-bg-alt:      #f3f3f3;   /* section bands */
+  --afa-dark:        #222222;   /* sub-footer */
+  --afa-dark-alt:    #333333;
+
+  /* SEMANTIC */
+  --afa-success:     var(--afa-green);
+  --afa-warning:     var(--afa-gold);
+  --afa-danger:      var(--afa-red);
+  --afa-info:        var(--afa-blue);
+
+  /* ----------------------------------------------------------
+     SEMANTIC TOKENS — use these in components
+     ---------------------------------------------------------- */
+  --bg:             var(--afa-white);
+  --bg-alt:         var(--afa-bg-alt);
+  --bg-surface:     var(--afa-white);
+  --bg-cream:       var(--afa-cream);
+  --bg-dark:        var(--afa-dark);
+
+  --fg:             var(--afa-text);
+  --fg-strong:      var(--afa-ink);
+  --fg-muted:       var(--afa-muted);
+  --fg-subtle:      var(--afa-faded);
+  --fg-on-dark:     var(--afa-white);
+  --fg-on-red:      var(--afa-white);
+
+  --accent:         var(--afa-red);
+  --accent-hover:   var(--afa-red-hover);
+  --accent-press:   var(--afa-red-press);
+
+  --highlight:      var(--afa-gold);          /* gold heading colour */
+  --secondary:      var(--afa-blue);          /* sub-heading blue */
+
+  --link:           var(--afa-ink);
+  --link-hover:     var(--afa-red);
+  --link-visited:   var(--afa-blue);
+
+  --line:           var(--afa-line);
+  --line-soft:      #eeeeee;
+  --line-strong:    #cccccc;
+
+  --focus-ring:     color-mix(in srgb, var(--afa-red) 50%, transparent);
+
+  /* ----------------------------------------------------------
+     TYPE
+     ---------------------------------------------------------- */
+  --font-display:  'Calistoga', 'Bookman Old Style', Georgia, cursive;
+  --font-body:     'IBM Plex Sans', 'Helvetica Neue', system-ui, -apple-system, sans-serif;
+  --font-mono:     'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* The live site uses ALL headings in Calistoga, with surprisingly
+     varied weight + letter-spacing per level. We keep that quirk. */
+  --fs-h1: 3.0rem;     /* 48px @ 16  → 42px @ 14 (site base) */
+  --fs-h2: 3.6rem;     /* 57.6px / 50.4px */
+  --fs-h3: 2.4rem;     /* 38.4px / 33.6px */
+  --fs-h4: 1.625rem;   /* 26px hard-set */
+  --fs-h5: 1.5rem;     /* 24px hard-set */
+  --fs-h6: 1.0rem;     /* 16px hard-set (used like a strong-lead body line on the live site) */
+
+  --fs-xs:   12px;
+  --fs-sm:   14px;     /* base body on live site */
+  --fs-base: 16px;
+  --fs-md:   18px;
+  --fs-lg:   21px;
+
+  --lh-tight:  1.15;
+  --lh-snug:   1.3;
+  --lh-normal: 1.5;
+  --lh-loose:  1.7;
+
+  /* Live site letter-spacing rhythm */
+  --ls-h1: 0.04em;
+  --ls-h2: 0em;
+  --ls-h3: 0.03em;
+  --ls-h4: 0.03em;
+  --ls-h5: 0.06em;
+  --ls-h6: 0.04em;
+  --ls-eyebrow: 0.12em;
+
+  --fw-thin:     100;
+  --fw-light:    300;
+  --fw-regular:  400;
+  --fw-medium:   500;   /* live site body weight */
+  --fw-semibold: 600;
+  --fw-bold:     700;
+  --fw-black:    900;
+
+  /* ----------------------------------------------------------
+     SPACING — 4-pt
+     ---------------------------------------------------------- */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+  --space-10: 128px;
+
+  /* ----------------------------------------------------------
+     RADII — the live theme uses "rounded_none" mode; we keep
+     the system tight: small radii on inputs/cards, pills only
+     for badges, never huge.
+     ---------------------------------------------------------- */
+  --radius-none:  0;
+  --radius-xs:    2px;
+  --radius-sm:    4px;
+  --radius-md:    6px;
+  --radius-lg:   10px;
+  --radius-pill: 999px;
+
+  /* ----------------------------------------------------------
+     ELEVATION — matches the WP theme's --box-shadow exactly
+     ---------------------------------------------------------- */
+  --shadow-sm:  0 2px 6px  rgba(0, 0, 0, 0.06);
+  --shadow-md:  0 5px 15px rgba(0, 0, 0, 0.15);   /* theme default */
+  --shadow-lg:  0 12px 32px rgba(0, 0, 0, 0.18);
+  --shadow-focus: 0 0 0 3px var(--focus-ring);
+
+  /* ----------------------------------------------------------
+     MOTION — site uses an "afb" cascade fade-in with 100–200ms
+     staggered delays. Hover transitions are 0.3s (default WP).
+     ---------------------------------------------------------- */
+  --ease-out:    cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-quick: 180ms;
+  --dur-base:  300ms;     /* theme default */
+  --dur-slow:  500ms;
+
+  /* ----------------------------------------------------------
+     LAYOUT
+     ---------------------------------------------------------- */
+  --content-max:  1220px;   /* theme --site-content-width */
+  --prose-max:    800px;    /* observed max-width on intro paragraphs */
+  --nav-height:   120px;    /* theme --header-height */
+  --nav-sticky-height: 76px;
+}
+
+/* ============================================================
+   BASE ELEMENT STYLES — mirror live theme
+   ============================================================ */
+
+html {
+  font-family: var(--font-body);
+  font-weight: var(--fw-medium);
+  font-size: var(--fs-sm);
+  line-height: 21px;
+  -webkit-text-size-adjust: 100%;
+}
+@media (max-width: 600px) {
+  html { font-size: 17px; line-height: 27px; }
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Headings — ALL Calistoga, with the live site's quirky weight scale */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  color: var(--fg-strong);
+  margin: 0 0 1.5rem;
+  text-wrap: balance;
+}
+h1 { font-size: var(--fs-h1); font-weight: 700; line-height: 1.39; letter-spacing: var(--ls-h1); }
+h2 { font-size: var(--fs-h2); font-weight: 700; line-height: 1;    letter-spacing: var(--ls-h2); }
+h3 { font-size: var(--fs-h3); font-weight: 400; line-height: 1.3;  letter-spacing: var(--ls-h3); }
+h4 { font-size: var(--fs-h4); font-weight: 900; line-height: 1.3;  letter-spacing: var(--ls-h4); }
+h5 { font-size: var(--fs-h5); font-weight: 300; line-height: 1.4;  letter-spacing: var(--ls-h5); }
+h6 { font-size: var(--fs-h6); font-weight: 100; line-height: 1.4;  letter-spacing: var(--ls-h6); }
+
+@media (max-width: 600px) {
+  h1 { font-size: 3.2rem; }
+  h2 { font-size: 2.5rem; }
+  h3 { font-size: 1.6rem; }
+  h4 { font-size: 1.3rem; }
+  h5 { font-size: 20px; }
+}
+
+/* AFA "section eyebrow" — sub-heading colour used at hero left-rail */
+.afa-h3--sub,
+.afa-eyebrow {
+  color: var(--secondary);
+  text-transform: uppercase;
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: var(--ls-eyebrow);
+}
+
+/* Gold accent — observed inline rule `.us_custom_58fbc6fa{color:#f7a700;font-weight:700}` */
+.afa-accent-gold {
+  color: var(--highlight);
+  font-weight: var(--fw-bold);
+}
+
+p, ul, ol {
+  margin: 0 0 1.5rem;
+}
+p { max-width: var(--prose-max); text-wrap: pretty; }
+
+a {
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: color var(--dur-base) ease;
+}
+a:hover { color: var(--link-hover); }
+a:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+strong, b { font-weight: var(--fw-bold); }
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: var(--space-6) 0;
+}
+
+/* Form inputs — match theme's 3.2em height + 1em padding + 2px border */
+input, select, textarea {
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+  color: var(--fg-strong);
+  background: var(--bg-surface);
+  border: 2px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 0.9em 1em;
+  line-height: 1.2;
+  transition: border-color var(--dur-quick) ease, box-shadow var(--dur-quick) ease;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: var(--shadow-focus);
+}
+
+/* ============================================================
+   COMPONENT CLASSES
+   ============================================================ */
+
+/* Buttons — matches us-btn-style_1 from theme + the red `.us_custom_6f759bb5` */
+.afa-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0.9em 1.6em;
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-light);
+  line-height: 1.2;
+  text-transform: none;
+  letter-spacing: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: var(--afa-red);
+  color: var(--fg-on-red);
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background var(--dur-base) ease, color var(--dur-base) ease,
+              transform var(--dur-quick) ease, box-shadow var(--dur-base) ease;
+}
+.afa-btn:hover {
+  background: var(--afa-red-hover);
+  color: var(--fg-on-red);
+  box-shadow: var(--shadow-md);
+}
+.afa-btn:active { transform: translateY(1px); background: var(--afa-red-press); }
+.afa-btn:focus-visible { box-shadow: var(--shadow-focus); }
+
+.afa-btn--gold     { background: var(--afa-gold); color: var(--afa-ink); }
+.afa-btn--gold:hover{ background: var(--afa-gold-hover); }
+
+.afa-btn--blue     { background: var(--afa-blue); }
+.afa-btn--blue:hover{ background: var(--afa-blue-hover); }
+
+.afa-btn--outline  { background: transparent; color: var(--afa-ink); border: 2px solid var(--afa-ink); }
+.afa-btn--outline:hover { background: var(--afa-ink); color: var(--afa-white); }
+
+/* Cards */
+.afa-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  transition: box-shadow var(--dur-base) ease, transform var(--dur-base) ease;
+}
+.afa-card:hover { box-shadow: var(--shadow-md); }
+
+/* Badge / pill */
+.afa-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  font-family: var(--font-body);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  border-radius: var(--radius-pill);
+  background: var(--afa-gold-soft);
+  color: var(--afa-gold-press);
+}
+.afa-badge--red  { background: var(--afa-red-soft);  color: var(--afa-red-press); }
+.afa-badge--blue { background: var(--afa-blue-soft); color: var(--afa-blue-press); }
+.afa-badge--green{ background: var(--afa-green-soft); color: var(--afa-green); }
+
+/* Layout helpers */
+.afa-container { max-width: var(--content-max); margin: 0 auto; padding: 0 var(--space-5); }
+.afa-prose     { max-width: var(--prose-max); }
+
+/* Section bands */
+.afa-section        { padding: var(--space-9) 0; background: var(--bg); }
+.afa-section--alt   { background: var(--bg-alt); }
+.afa-section--dark  { background: var(--bg-dark); color: var(--fg-on-dark); }
+.afa-section--dark h1, .afa-section--dark h2, .afa-section--dark h3,
+.afa-section--dark h4, .afa-section--dark h5, .afa-section--dark h6 { color: var(--fg-on-dark); }
