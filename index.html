@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=1320">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>La Strada Giusta — AFA Scuola Italiana di Barcellona</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='10' height='32' x='0' fill='%23009246'/%3E%3Crect width='10' height='32' x='11' fill='%23ffffff'/%3E%3Crect width='10' height='32' x='22' fill='%23e62d38'/%3E%3C/svg%3E">
 
@@ -402,8 +402,9 @@ input:focus, select:focus, textarea:focus {
     color: var(--afa-ink);
     background: var(--afa-cream);
     min-height: 100vh;
-    min-width: 1280px;
     -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior-y: contain;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -905,10 +906,71 @@ input:focus, select:focus, textarea:focus {
     .sidebar { position: static; }
     .title-screen, .final { grid-template-columns: 1fr; gap: 28px; padding: 36px; }
   }
+
+  /* ------------------------------------------------------------
+     PHONE LAYOUT (≤ 768px) — keep the map at its 3:2 ratio so
+     drawn-route coordinates stay aligned with pickups.
+     ------------------------------------------------------------ */
+  .rotate-hint { display: none; }
+
+  @media (max-width: 768px) {
+    .app { padding: 12px 12px 28px; }
+
+    .topbar { flex-wrap: wrap; gap: 10px; }
+    .topbar__brand img { height: 40px; }
+    .topbar__brand-text .name { font-size: 16px; }
+    .topbar__brand-text .kicker { font-size: 10px; }
+    .topbar__brand-text .sub { display: none; }
+    .lang-toggle button { padding: 6px 10px; font-size: 12px; }
+
+    .title-screen { padding: 24px; gap: 20px; }
+    .title-screen h1 { font-size: 2.2rem; }
+    .title-screen .tagline { font-size: 1.15rem; }
+    .title-screen .intro,
+    .title-screen .challenge { font-size: 14px; max-width: none; }
+    .title-screen .cta-row { flex-wrap: wrap; }
+
+    .map-stage { -webkit-touch-callout: none; }
+    .hud .pill { font-size: 11px; }
+    .hud .pill .value { font-size: 14px; }
+
+    .sidebar .level-meta .num { font-size: 26px; }
+
+    .modal-veil { position: fixed; }
+    .modal { padding: 22px 20px; }
+    .modal h2 { font-size: 1.5rem; }
+    .modal .score-line .score-num { font-size: 40px; }
+    .modal .actions { flex-wrap: wrap; }
+
+    .final { padding: 24px; }
+    .final h1 { font-size: 2rem; }
+    .final .total .num { font-size: 48px; }
+    .final .actions { flex-wrap: wrap; }
+
+    .footer-note { font-size: 10px; }
+  }
+
+  @media (max-width: 768px) and (orientation: portrait) {
+    .rotate-hint {
+      display: block;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      background: var(--afa-gold);
+      color: var(--afa-ink);
+      text-align: center;
+      font-family: "IBM Plex Sans", system-ui, sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      padding: 8px 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.18);
+    }
+  }
 </style>
 </head>
 <body>
 
+<div class="rotate-hint" aria-hidden="true">⟳ Ruota il telefono · Rotate device</div>
 <div id="root"></div>
 
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
