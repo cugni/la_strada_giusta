@@ -1492,6 +1492,14 @@ function MapStage(props) {
           const isSelected = phase === "planning" && selectedBus === i;
           return (
             <g key={`depot-${i}`} transform={`translate(${dx} ${dy})`}>
+              {/* flashing aura around the bus currently being routed */}
+              {isSelected && (
+                <circle cx={0} cy={2} r={30} fill="none" stroke={color} strokeWidth={4}>
+                  <animate attributeName="r" values="26;46;26" dur="1.2s" repeatCount="indefinite"/>
+                  <animate attributeName="stroke-width" values="5;1;5" dur="1.2s" repeatCount="indefinite"/>
+                  <animate attributeName="opacity" values="0.9;0.15;0.9" dur="1.2s" repeatCount="indefinite"/>
+                </circle>
+              )}
               {/* badge sits ABOVE bus so the P label is visible */}
               <g transform="translate(0 -38)">
                 <rect x={-22} y={-13} width={44} height={26} rx={4} fill={"#fff"} stroke={color} strokeWidth={3}>
