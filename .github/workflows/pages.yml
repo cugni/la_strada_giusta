@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - claude/implement-index-html-L79LY
   workflow_dispatch:
 
 permissions:
