@@ -1726,16 +1726,21 @@ function GameScreen({ level, lang, onLevelComplete, seed }) {
   const onPointerDown = useCallback((evt, stageEl) => {
     if (phase !== "planning") return;
     if (!stageEl) return;
+    // Ignore secondary touches (pinch-zoom / multi-touch): only the
+    // primary pointer draws. A second finger cancels the stroke so a
+    // zoom gesture doesn't scribble a route.
+    if (!evt.isPrimary) { setDrawing(null); return; }
     stageEl.setPointerCapture(evt.pointerId);
     const rect = stageEl.getBoundingClientRect();
     const p = pointerToNorm(evt, rect);
     // Always start at this bus's depot
     const d = depots[selectedBus];
-    setDrawing({ busIdx: selectedBus, path: [[d.x, d.y], [p.x, p.y]] });
+    setDrawing({ busIdx: selectedBus, pointerId: evt.pointerId, path: [[d.x, d.y], [p.x, p.y]] });
   }, [phase, selectedBus, depots]);
 
   const onPointerMove = useCallback((evt, stageEl) => {
     if (!drawing || phase !== "planning") return;
+    if (evt.pointerId !== drawing.pointerId) return;
     const rect = stageEl.getBoundingClientRect();
     const p = pointerToNorm(evt, rect);
     setDrawing(d => {
@@ -1753,6 +1758,7 @@ function GameScreen({ level, lang, onLevelComplete, seed }) {
 
   const onPointerUp = useCallback((evt, stageEl) => {
     if (!drawing) return;
+    if (evt.pointerId !== drawing.pointerId) return;
     // Auto-close path back to school
     const finalPath = [...drawing.path, [GAME.school.x, GAME.school.y]];
     const len = GAMEU.pathLength(finalPath);
