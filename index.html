@@ -1032,8 +1032,8 @@ window.GAME = {
   busColorsSoft:["#fde0e1", "#d9e6ee", "#fdeac1"],
 
   capacity:      8,     // kids per bus
-  timeBudget:    12,    // seconds per run (= a < 60 min real trip)
-  speed:         0.096, // normalised units per second
+  timeBudget:    6,     // seconds per run (= a < 60 min real trip)
+  speed:         0.48,  // normalised units per second
   jamSlow:       0.45,  // multiplier inside a jam
   pickupRadius:  0.028, // route must pass within this of a stop
   schoolRadius:  0.045, // bus delivers when it re-enters this zone
@@ -1056,7 +1056,7 @@ window.STRINGS = {
   it: {
     title: "La Strada Giusta",
     tagline: "Aiuta lo Scuolabus AFA a portare tutti a scuola.",
-    intro: "Disegna la rotta degli autobus: passa vicino ai bambini per farli salire e torna a scuola in tempo. Ogni autobus porta 8 bambini. Il giro deve durare meno di 60 minuti: nel gioco lo facciamo in 12 secondi.",
+    intro: "Disegna la rotta degli autobus: passa vicino ai bambini per farli salire e torna a scuola in tempo. Ogni autobus porta 8 bambini. Il giro deve durare meno di 60 minuti: nel gioco lo facciamo in 6 secondi.",
     challenge: "Riuscirai a portarli tutti? Provaci con 1 autobus. Poi con 2. Poi con 3.",
     play: "Iniziamo",
     level: "Livello",
@@ -1111,7 +1111,7 @@ window.STRINGS = {
   es: {
     title: "El Camino Justo",
     tagline: "Ayuda al autobús escolar de AFA a llevar a todos al cole.",
-    intro: "Dibuja la ruta de los autobuses: pasa cerca de los niños para recogerlos y vuelve al cole a tiempo. Cada autobús lleva 8 niños. El viaje debe durar menos de 60 minutos: en el juego lo hacemos en 12 segundos.",
+    intro: "Dibuja la ruta de los autobuses: pasa cerca de los niños para recogerlos y vuelve al cole a tiempo. Cada autobús lleva 8 niños. El viaje debe durar menos de 60 minutos: en el juego lo hacemos en 6 segundos.",
     challenge: "¿Conseguirás llevarlos a todos? Inténtalo con 1 autobús. Luego con 2. Luego con 3.",
     play: "Empezar",
     level: "Nivel",
@@ -1166,7 +1166,7 @@ window.STRINGS = {
   ca: {
     title: "El Camí Just",
     tagline: "Ajuda l’autobús escolar d’AFA a portar tothom a l’escola.",
-    intro: "Dibuixa la ruta dels autobusos: passa a prop dels infants per recollir-los i torna a l’escola a temps. Cada autobús porta 8 infants. El recorregut ha de durar menys de 60 minuts: al joc el fem en 12 segons.",
+    intro: "Dibuixa la ruta dels autobusos: passa a prop dels infants per recollir-los i torna a l’escola a temps. Cada autobús porta 8 infants. El recorregut ha de durar menys de 60 minuts: al joc el fem en 6 segons.",
     challenge: "Els portaràs tots? Prova-ho amb 1 autobús. Després amb 2. Després amb 3.",
     play: "Comencem",
     level: "Nivell",
@@ -1221,7 +1221,7 @@ window.STRINGS = {
   en: {
     title: "The Right Route",
     tagline: "Help the AFA school bus get every kid to school.",
-    intro: "Draw routes for the buses: pass close to each kid to pick them up, and get back to school in time. Each bus holds 8 kids. The whole trip should take less than 60 minutes — in the game we do it in 12 seconds.",
+    intro: "Draw routes for the buses: pass close to each kid to pick them up, and get back to school in time. Each bus holds 8 kids. The whole trip should take less than 60 minutes — in the game we do it in 6 seconds.",
     challenge: "Can you collect them all? Try with 1 bus. Then 2. Then 3.",
     play: "Start",
     level: "Level",
@@ -1582,7 +1582,7 @@ function Sidebar({
   canDepart, onDepart, onSeeResult,
 }) {
   const sec = Math.ceil(timeLeft);
-  const lowTime = sec <= 3 && phase === "running";
+  const lowTime = sec <= 2 && phase === "running";
   return (
     <aside className="sidebar">
       <div className="level-meta">
@@ -2068,10 +2068,10 @@ function TitleScreen({ lang, onStart }) {
           <button className="btn btn--big" onClick={onStart}>{L.play}</button>
           <div style={{fontSize: 12, color: "var(--afa-muted)", maxWidth: 200, lineHeight: 1.4}}>
             {{
-              it: "3 livelli · 12 secondi · 16 bambini",
-              es: "3 niveles · 12 segundos · 16 niños",
-              ca: "3 nivells · 12 segons · 16 infants",
-              en: "3 levels · 12 seconds · 16 kids",
+              it: "3 livelli · 6 secondi · 16 bambini",
+              es: "3 niveles · 6 segundos · 16 niños",
+              ca: "3 nivells · 6 segons · 16 infants",
+              en: "3 levels · 6 seconds · 16 kids",
             }[lang]}
           </div>
         </div>
