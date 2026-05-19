@@ -589,8 +589,17 @@ input:focus, select:focus, textarea:focus {
     border: 1px solid var(--afa-line);
     box-shadow: var(--shadow-md);
     user-select: none;
-    touch-action: none;
+    /* Single-finger tap selects kids; two fingers still pan/zoom the map
+       so people can zoom in without scribbling a route. */
+    touch-action: pan-x pan-y pinch-zoom;
   }
+  .map-stage svg.overlay .stop-hit { cursor: pointer; }
+  @keyframes bus-card-shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+  }
+  .bus-card[data-full="true"] { animation: bus-card-shake 0.3s ease; }
   .map-stage img.bg {
     position: absolute; inset: 0;
     width: 100%; height: 100%;
@@ -1066,8 +1075,8 @@ window.STRINGS = {
       2: "Due autobus, due rotte. Meglio?",
       3: "Tre autobus. Adesso si fa sul serio.",
     },
-    selectBus: "Scegli un autobus, poi disegna la rotta sulla mappa.",
-    selectBusShort: "Disegna una rotta",
+    selectBus: "Scegli un autobus, poi tocca i bambini nell’ordine di raccolta.",
+    selectBusShort: "Tocca i bambini",
     clearRoute: "Cancella rotta",
     depart: "Parti!",
     running: "In viaggio…",
@@ -1100,7 +1109,7 @@ window.STRINGS = {
     bdTime: "Penalità tempo",
     bdDist: "Penalità distanza",
     bdBonus: "Bonus pieno carico",
-    drawHint: "Ogni autobus parte dal suo parcheggio (P1, P2…). Tieni premuto e trascina per disegnare la rotta — si chiuderà automaticamente a scuola.",
+    drawHint: "Scegli un autobus e tocca i bambini nell’ordine in cui salgono: la rotta parte dal parcheggio (P1, P2…) e si chiude a scuola. Col mouse puoi anche disegnarla a mano.",
     pickupTip: "Passa entro il cerchietto attorno a ciascun bambino per farlo salire.",
     jamTip: "Gli ingorghi rossi rallentano l’autobus. Evitali!",
     perfect: "Tutti a scuola!",
@@ -1121,8 +1130,8 @@ window.STRINGS = {
       2: "Dos autobuses, dos rutas. ¿Mejor?",
       3: "Tres autobuses. Ahora va en serio.",
     },
-    selectBus: "Elige un autobús y dibuja su ruta sobre el mapa.",
-    selectBusShort: "Dibuja una ruta",
+    selectBus: "Elige un autobús y toca a los niños en orden de recogida.",
+    selectBusShort: "Toca a los niños",
     clearRoute: "Borrar ruta",
     depart: "¡A rodar!",
     running: "En camino…",
@@ -1155,7 +1164,7 @@ window.STRINGS = {
     bdTime: "Penalización tiempo",
     bdDist: "Penalización distancia",
     bdBonus: "Bono carga completa",
-    drawHint: "Cada autobús sale de su aparcamiento (P1, P2…). Mantén pulsado y arrastra para dibujar la ruta — se cierra sola en la escuela.",
+    drawHint: "Elige un autobús y toca a los niños en el orden en que suben: la ruta sale del aparcamiento (P1, P2…) y se cierra en la escuela. Con el ratón también puedes dibujarla a mano.",
     pickupTip: "Pasa dentro del círculo de cada niño para subirlo.",
     jamTip: "Los atascos rojos frenan el autobús. ¡Esquívalos!",
     perfect: "¡Todos al cole!",
@@ -1176,8 +1185,8 @@ window.STRINGS = {
       2: "Dos autobusos, dues rutes. Millor?",
       3: "Tres autobusos. Ara va de debò.",
     },
-    selectBus: "Tria un autobús i dibuixa la seva ruta sobre el mapa.",
-    selectBusShort: "Dibuixa una ruta",
+    selectBus: "Tria un autobús i toca els infants en l’ordre de recollida.",
+    selectBusShort: "Toca els infants",
     clearRoute: "Esborra ruta",
     depart: "Som-hi!",
     running: "En camí…",
@@ -1210,7 +1219,7 @@ window.STRINGS = {
     bdTime: "Penalització temps",
     bdDist: "Penalització distància",
     bdBonus: "Bonificació plenitud",
-    drawHint: "Cada autobús surt del seu aparcament (P1, P2…). Mantén premut i arrossega per dibuixar la ruta — es tanca sola a l’escola.",
+    drawHint: "Tria un autobús i toca els infants en l’ordre en què pugen: la ruta surt de l’aparcament (P1, P2…) i es tanca a l’escola. Amb el ratolí també pots dibuixar-la a mà.",
     pickupTip: "Passa dins del cercle de cada infant per pujar-lo.",
     jamTip: "Els embussos vermells frenen l’autobús. Evita’ls!",
     perfect: "Tothom a l’escola!",
@@ -1231,8 +1240,8 @@ window.STRINGS = {
       2: "Two buses, two routes. Any easier?",
       3: "Three buses. Now we’re talking.",
     },
-    selectBus: "Pick a bus and draw its route on the map.",
-    selectBusShort: "Draw a route",
+    selectBus: "Pick a bus, then tap the kids in pick-up order.",
+    selectBusShort: "Tap the kids",
     clearRoute: "Clear route",
     depart: "Go!",
     running: "On the road…",
@@ -1265,7 +1274,7 @@ window.STRINGS = {
     bdTime: "Time penalty",
     bdDist: "Distance penalty",
     bdBonus: "Full-house bonus",
-    drawHint: "Each bus starts from its own parking spot (P1, P2…). Press and drag to draw the route — it auto-closes at school.",
+    drawHint: "Pick a bus and tap the kids in the order they board — the route starts at the parking spot (P1, P2…) and closes at school. With a mouse you can also draw it freehand.",
     pickupTip: "Pass inside the circle around each kid to pick them up.",
     jamTip: "Red traffic jams slow the bus. Steer around them!",
     perfect: "Everyone’s at school!",
@@ -1346,7 +1355,7 @@ function pathToD(path) {
 }
 
 /* ---------- StopMarker ---------- */
-function StopMarker({ stop, status, busColor }) {
+function StopMarker({ stop, status, busColor, order, orderColor, interactive, onPick }) {
   const [sx, sy] = toSvg([stop.x, stop.y]);
   const isWaiting = status === "waiting";
   const isOn = typeof status === "string" && status.startsWith("on:");
@@ -1381,6 +1390,24 @@ function StopMarker({ stop, status, busColor }) {
           <circle r={16} fill="#009246" stroke="#fff" strokeWidth={3}/>
           <path d="M -6 0 L -1.5 4.5 L 7 -5" fill="none" stroke="#fff" strokeWidth={3.2} strokeLinecap="round" strokeLinejoin="round"/>
         </g>
+      )}
+
+      {/* Order badge when this kid is part of a bus route */}
+      {order != null && (
+        <g transform="translate(15 -15)">
+          <circle r={13} fill={orderColor || "#1a1a1a"} stroke="#fff" strokeWidth={2.5}/>
+          <text x={0} y={1} textAnchor="middle" dominantBaseline="middle"
+                fontSize={15} fontWeight={700} fontFamily="Calistoga" fill="#fff">
+            {order}
+          </text>
+        </g>
+      )}
+
+      {/* Big transparent tap target — easy to hit on a phone */}
+      {interactive && isWaiting && (
+        <circle className="stop-hit" r={Math.max(GAME.pickupRadius * SVG_W, 44)}
+                fill="transparent"
+                onPointerDown={(e) => { e.stopPropagation(); onPick && onPick(stop.id); }}/>
       )}
     </g>
   );
@@ -1463,6 +1490,7 @@ function MapStage(props) {
   const {
     routes, drawingPath, drawingBus, stopStatus, buses, jams,
     flashes, phase, selectedBus, depots, onPointerDown, onPointerMove, onPointerUp,
+    stopAssign, onPickStop,
   } = props;
 
   const stageRef = useRef(null);
@@ -1538,17 +1566,24 @@ function MapStage(props) {
         )}
 
         {/* Stops */}
-        {GAME.stops.map(s => (
-          <StopMarker
-            key={s.id}
-            stop={s}
-            status={stopStatus[s.id]}
-            busColor={
-              typeof stopStatus[s.id] === "string" && stopStatus[s.id].startsWith("on:")
-                ? GAME.busColors[parseInt(stopStatus[s.id].slice(3))] : null
-            }
-          />
-        ))}
+        {GAME.stops.map(s => {
+          const a = stopAssign ? stopAssign[s.id] : null;
+          return (
+            <StopMarker
+              key={s.id}
+              stop={s}
+              status={stopStatus[s.id]}
+              busColor={
+                typeof stopStatus[s.id] === "string" && stopStatus[s.id].startsWith("on:")
+                  ? GAME.busColors[parseInt(stopStatus[s.id].slice(3))] : null
+              }
+              order={a ? a.order : null}
+              orderColor={a ? a.color : null}
+              interactive={phase === "planning"}
+              onPick={onPickStop}
+            />
+          );
+        })}
 
         {/* School */}
         <SchoolMarker/>
@@ -1585,7 +1620,7 @@ function MapStage(props) {
 
 /* ---------- Sidebar ---------- */
 function Sidebar({
-  L, level, numBuses, routes, selectedBus, setSelectedBus, clearRoute,
+  L, level, numBuses, routes, waypoints, shakeBus, selectedBus, setSelectedBus, clearRoute,
   phase, timeLeft, delivered, totalKids, onBoardSum, distanceSum,
   canDepart, onDepart, onSeeResult,
 }) {
@@ -1606,11 +1641,13 @@ function Sidebar({
 
       <div className="bus-list">
         {Array.from({length: numBuses}).map((_, i) => {
-          const has = routes[i] && routes[i].length > 1;
+          const count = (waypoints && waypoints[i] ? waypoints[i].length : 0);
+          const has = count > 0 || (routes[i] && routes[i].length > 1);
           const selected = selectedBus === i && phase === "planning";
           return (
             <div key={i} className="bus-card"
                  data-selected={selected}
+                 data-full={shakeBus === i}
                  onClick={() => phase === "planning" && setSelectedBus(i)}>
               <div className="swatch" style={{background: GAME.busColors[i]}}>
                 <svg viewBox="-22 -12 44 24" width="22" height="14">
@@ -1623,8 +1660,8 @@ function Sidebar({
               <div className="meta">
                 <div className="name">{L.bus} {i + 1}</div>
                 <div className="status">
-                  {has
-                    ? L.selectBusShort + " ✓"
+                  {count > 0
+                    ? `${count}/${GAME.capacity} 🧒`
                     : (selected ? L.selectBus : L.selectBusShort)}
                 </div>
               </div>
@@ -1688,6 +1725,8 @@ function GameScreen({ level, lang, onLevelComplete, seed }) {
   const totalKids = GAME.stops.length;
 
   const [routes, setRoutes] = useState({});           // {busIdx: [[x,y]...]}
+  const [waypoints, setWaypoints] = useState({});     // {busIdx: [stopId...]} (tap order)
+  const [shakeBus, setShakeBus] = useState(null);     // bus card shake when full
   const [selectedBus, setSelectedBus] = useState(0);
   const [drawing, setDrawing] = useState(null);       // {busIdx, path}
   const [phase, setPhase] = useState("planning");     // planning | running | finished
@@ -1734,6 +1773,10 @@ function GameScreen({ level, lang, onLevelComplete, seed }) {
   const onPointerDown = useCallback((evt, stageEl) => {
     if (phase !== "planning") return;
     if (!stageEl) return;
+    // Finger-drawing is disabled by default: on touch you tap the kids in
+    // order instead (handled per-stop). This stops a pinch-zoom from
+    // scribbling a route. Mouse / stylus can still freehand-draw.
+    if (evt.pointerType === "touch") return;
     // Ignore secondary touches (pinch-zoom / multi-touch): only the
     // primary pointer draws. A second finger cancels the stroke so a
     // zoom gesture doesn't scribble a route.
@@ -1791,8 +1834,83 @@ function GameScreen({ level, lang, onLevelComplete, seed }) {
     setDrawing(null);
   }, [drawing, numBuses]);
 
+  // Build a bus route from an ordered list of stop ids:
+  // depot → each tapped kid → school.
+  const stopById = useMemo(
+    () => Object.fromEntries(GAME.stops.map(s => [s.id, s])), []
+  );
+  const routeFromIds = useCallback((busIdx, ids) => {
+    const d = depots[busIdx];
+    const pts = ids.map(id => [stopById[id].x, stopById[id].y]);
+    return [[d.x, d.y], ...pts, [GAME.school.x, GAME.school.y]];
+  }, [depots, stopById]);
+
+  // Tap a kid: add it to the selected bus (in order), or remove it if
+  // it's already on that bus. A kid can only belong to one bus, so
+  // tapping a kid owned by another bus reassigns it to the selected one.
+  const onPickStop = useCallback((stopId) => {
+    if (phase !== "planning") return;
+    const bus = selectedBus;
+    setWaypoints(prev => {
+      const next = {};
+      for (const k of Object.keys(prev)) next[k] = prev[k].slice();
+      const cur = next[bus] || [];
+
+      if (cur.includes(stopId)) {
+        next[bus] = cur.filter(id => id !== stopId);   // toggle off
+      } else {
+        if (cur.length >= GAME.capacity) {             // bus is full
+          setShakeBus(bus);
+          setTimeout(() => setShakeBus(s => (s === bus ? null : s)), 320);
+          return prev;
+        }
+        // remove from any other bus that owned it
+        for (const k of Object.keys(next)) {
+          if (+k !== bus) next[k] = next[k].filter(id => id !== stopId);
+        }
+        next[bus] = [...cur, stopId];
+
+        // Bus just filled up → jump to the next bus that still has room.
+        if (next[bus].length >= GAME.capacity) {
+          for (let off = 1; off < numBuses; off++) {
+            const cand = (bus + off) % numBuses;
+            if ((next[cand] || []).length < GAME.capacity) {
+              setSelectedBus(cand);
+              break;
+            }
+          }
+        }
+      }
+
+      // Recompute routes for buses that have waypoints; keep any
+      // freehand (mouse-drawn) routes for buses that have none.
+      setRoutes(prevR => {
+        const r = { ...prevR };
+        for (const k of Object.keys(next)) {
+          const ids = next[k];
+          if (ids && ids.length) r[k] = routeFromIds(+k, ids);
+          else delete r[k];
+        }
+        return r;
+      });
+      return next;
+    });
+  }, [phase, selectedBus, routeFromIds, numBuses]);
+
+  // stopId → { order, color } for the badges on the map
+  const stopAssign = useMemo(() => {
+    const m = {};
+    for (const k of Object.keys(waypoints)) {
+      waypoints[k].forEach((id, i) => {
+        m[id] = { order: i + 1, color: GAME.busColors[+k] };
+      });
+    }
+    return m;
+  }, [waypoints]);
+
   const clearRoute = useCallback((idx) => {
     setRoutes(r => { const n = { ...r }; delete n[idx]; return n; });
+    setWaypoints(w => { const n = { ...w }; delete n[idx]; return n; });
   }, []);
 
   // ---- depart ----
@@ -1985,12 +2103,16 @@ function GameScreen({ level, lang, onLevelComplete, seed }) {
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
+        stopAssign={stopAssign}
+        onPickStop={onPickStop}
       />
       <Sidebar
         L={L}
         level={level}
         numBuses={numBuses}
         routes={routes}
+        waypoints={waypoints}
+        shakeBus={shakeBus}
         selectedBus={selectedBus}
         setSelectedBus={setSelectedBus}
         clearRoute={clearRoute}
